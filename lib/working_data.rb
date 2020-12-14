@@ -13,11 +13,9 @@ class WorkData
   end
 
   def get_arr(working_file)
+    @arr << working_file.getch until working_file.eos?
 
-    until working_file.eos?
-      @arr << working_file.getch
-    end
-    @arr = @arr.join('').gsub("\n" ,"here\n").split("here")
+    @arr = @arr.join('').gsub("\n", "here\n").split('here')
   end
 
   def new_line_remove
@@ -26,4 +24,3 @@ class WorkData
     end
   end
 end
-

@@ -6,4 +6,3 @@ work_data = WorkData.new
 lines_array = LineArray.new(work_data.arr)
 all_lines = lines_array.all_lines
 p all_lines
-
