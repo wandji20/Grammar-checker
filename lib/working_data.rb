@@ -9,6 +9,7 @@ class WorkData
     @my_file = File.read('../user.txt')
     @working_file = StringScanner.new(@my_file)
     get_arr(@working_file)
+    new_line_remove
   end
 
   def get_arr(working_file)
@@ -16,7 +17,13 @@ class WorkData
     until working_file.eos?
       @arr << working_file.getch
     end
-    @arr = @arr.join('').split("\n")
+    @arr = @arr.join('').gsub("\n" ,"here\n").split("here")
+  end
+
+  def new_line_remove
+    @arr.map do |line|
+      line.sub!("\n", '')
+    end
   end
 end
 
