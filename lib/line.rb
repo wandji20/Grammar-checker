@@ -42,10 +42,11 @@ class Lines
     all_lines.each_with_index do |line, index|
       puts " checking line:#{index+1}"
       line = StringScanner.new(line[0])
-      start_space_check(line, index)
-      end_space_check(line, index)
-      within_space_check(line, index)
-      punctuation_check(line, index)
+      # start_space_check(line, index)
+      # end_space_check(line, index)
+      # within_space_check(line, index)
+      # punctuation_check(line, index)
+      capital_letter_check(line, index)
     end
   end
 
@@ -73,35 +74,44 @@ class Lines
   end
 
   def within_space_check(line, index)
-    counts_array = []
     line = line.string.strip()
     line = StringScanner.new(line)
     until line.eos?
-      counts = 0
-      scanned_section = line.scan_until(/\w+/)
-      if scanned_section != nil      
-        scanned_section.each_char do |charat|
-        counts += 1 if charat == ' '
-        end
-        counts_array << counts
+      current_item = line.getch
+      if current_item == ' '
+        line.pos = line.pos - 2
+        puts "Line :#{index+1} Trailling white-space detected within words" if line.peek(2) == '  '
+        line.pos = line.pos + 2
       end
       
-      line.terminate if scanned_section == nil
     end
-  
-    puts "Line :#{index+1} Trailling white-space detected within words" if counts_array.any?{ |spaces| spaces > 1}
   end
 
   def punctuation_check(line, index)
     until line.eos?
       current_item = line.getch
-      line.peek(1)
-      if @punctuation.include?(current_item) && line.peek(2) == '  '
-        puts "Line :#{index+1} Trailling white-space detected after #{current_item} "
+      if @punctuation.include?(current_item)
+        line.pos = line.pos - 2
+        puts "Line :#{index+1} Trailling white-space detected before #{current_item} " if line.peek(1) == ' '
+        line.pos = line.pos + 2
+        puts "Line :#{index+1} Trailling white-space detected after #{current_item} " if line.peek(2) == '  '
       end
     end
 
 
+  end
+
+  def capital_letter_check(line, index)
+    until line.eos?
+      current_item = line.getch
+      if ['.','?','!'].include?(current_item)
+        scanned_word = line.scan_until(/(\w+)/)
+        if scanned_word != nil
+          validity = scanned_word.strip[0] == scanned_word.strip[0].upcase
+          puts "Line :#{index+1} Wrong capitalization of #{scanned_word.strip[0]} in '#{scanned_word.strip}' " unless validity
+        end
+      end
+    end
   end
 
 end
