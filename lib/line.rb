@@ -39,6 +39,9 @@ class Lines
   end
 
   def doing_line_checks
+    top_empty_line(@all_lines[0][0], @all_lines[1][0])
+    heading_check(@all_lines[2][0] )
+    bottom_header_empty_line( @all_lines[3][0] )
     all_lines.each_with_index do |line, index|
       puts " checking line:#{index+1}"
       line = StringScanner.new(line[0])
@@ -46,8 +49,11 @@ class Lines
       # end_space_check(line, index)
       # within_space_check(line, index)
       # punctuation_check(line, index)
-      capital_letter_check(line, index)
+      # capital_letter_check(line, index)
+      # capital_i_check(line, index)
+      
     end
+    bottom_text_check(@all_lines.last[0] )
   end
 
   def start_space_check(line, index)
@@ -114,4 +120,29 @@ class Lines
     end
   end
 
+  def capital_i_check(line, index)
+    until line.eos?
+      scanned_word = line.scan_until(/(\w+)/)
+      scanned_word.strip! if scanned_word != nil
+      puts "Line :#{index+1} Wrong capitalization of 'i' Use 'I' instead " if scanned_word == 'i'
+      line.terminate if scanned_word == nil
+    end
+  end
+
+  def top_empty_line(line1, line2)
+    puts " Missing Two empty lines at the top of Article" unless line1 == '' && line2 == ''
+  end
+
+  def bottom_text_check(line)
+    puts "Line  Trailing empty line at the End of Text" if line == ''
+  end
+  
+  def heading_check(line)
+    arr = line.split()
+    puts "Line 3: Capitalize all header words" unless arr.all?{ |word| word[0] == word[0].upcase }
+  end
+
+  def bottom_header_empty_line(line4)
+    puts " Missing empty lines at the Bottom of Article Title" unless line4 == ''
+  end
 end
