@@ -20,7 +20,7 @@ class Paragraph
         total_words += line_word_counts(line_index)
       end
     end
-    puts "Maximum word size Exceeded: You made #{total_words} Words" if total_words > 100
+    puts "Maximum word size Exceeded: You made #{total_words} Words" if total_words > 400
   end
 
   def line_word_counts(line_index)

@@ -41,12 +41,15 @@ class Lines
   def within_space_check(line, index)
     current_line = line.string.strip
     current_line = StringScanner.new(current_line)
+    flag = false
     until current_line.eos?
       current_item = current_line.getch
       if current_item == ' ' && current_line.peek(1) == ' '
         puts "Line :#{index + 1} Trailling white-space detected within words"
+        flag = true
       end
     end
+    flag
   end
 
   def capital_i_check(line, index)
@@ -56,7 +59,9 @@ class Lines
       current_line.terminate if scanned_word.nil?
       if scanned_word && scanned_word.strip == 'i' && current_line.peek(1) == ' '
         puts "Line :#{index + 1} Wrong capitalization of 'i' Use 'I' instead "
+        true
       end
+      false
     end
   end
 
@@ -68,15 +73,17 @@ class Lines
         current_line.pos = current_line.pos - 2
         if current_line.peek(1) == ' '
           puts "Line :#{index + 1} Trailling white-space detected before '#{current_item}' "
-        end
-        current_line.pos = current_line.pos + 2
-        if current_line.pos < line.string.length && current_line.peek(2) == '  '
+          true
+          current_line.pos = current_line.pos + 2
+        elsif current_line.pos < line.string.length && current_line.peek(2) == '  '
           puts "Line :#{index + 1} Two white-spaces detected after '#{current_item}' instead of one "
-        end
-        if @punctuation.include?(current_line.peek(1))
+          true
+        elsif @punctuation.include?(current_line.peek(1))
           puts "Line :#{index + 1} Wrong use of punctuation mark after '#{current_item}' "
+          true
         end
       end
+      false
     end
   end
 
@@ -89,7 +96,9 @@ class Lines
         current_line.terminate if scanned_word.nil?
         if scanned_word && scanned_word.strip[0].upcase != scanned_word.strip[0]
           puts "Line :#{index + 1} Use  '#{scanned_word.strip[0].upcase}' insted of '#{scanned_word.strip[0]}' in word '#{scanned_word.strip}'"
+          true
         end
+        false
       end
     end
   end
@@ -100,6 +109,9 @@ class Lines
       first_word.strip[0]
       if first_word.strip[0].upcase != first_word.strip[0]
         puts "Line :#{index + 1} Use '#{first_word.strip[0].upcase}' insted of '#{first_word.strip[0]} at the start of a new line"
+        true
+      else
+        false
       end
     end
   end
