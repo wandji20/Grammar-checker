@@ -3,7 +3,7 @@ require '../lib/line'
 require_relative '../lib/paragraph'
 require 'strscan'
 
-my_data = ['', 'the blackloard', 'My Rspec  Test ', '  name', '  my name  is wandji', 'Microverse is a very great community! ']
+my_data = ['', 'the blackloard', 'My Rspec  Test ', ' name', ' my name  is wandji', 'Microverse great community! ']
 
 describe Lines do
   my_lines = Lines.new(my_data)
