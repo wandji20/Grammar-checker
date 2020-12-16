@@ -1,72 +1,38 @@
 # rubocop:disable Style/GuardClause,Style/Next,Metrics/CyclomaticComplexity,Layout/LineLength,Style/IfUnlessModifier
 class Lines
-  attr_accessor :my_paragraph_index
-  attr_reader :my_data
+  attr_accessor :my_paragraph_index, :my_data
 
   def initialize(lines_array)
     @punctuation = ['.', ',', ';', ':', '!', '?']
     @my_data = lines_array
-    @my_paragraph_index = nil
-    paragraph_index
+    @my_paragraph_index = paragraph_index(@my_data)
   end
 
-  def paragraph_index
+  def paragraph_index(my_data)
     paragragh_start_index = []
     paragragh_end_index = []
-    (4...@my_data.length - 1).each do |i|
-      if /[a-zA-Z]/.match(@my_data[i]) && @my_data[i - 1] == ''
+    (4...my_data.length - 1).each do |i|
+      if /[a-zA-Z]/.match(my_data[i]) && my_data[i - 1] == ''
         paragragh_start_index << i
       end
     end
-    (4...@my_data.length - 1).each do |i|
-      if /[a-zA-Z]/.match(@my_data[i]) && @my_data[i + 1] == ''
+    (4...my_data.length - 1).each do |i|
+      if /[a-zA-Z]/.match(my_data[i]) && my_data[i + 1] == ''
         paragragh_end_index << i
       end
     end
     @my_paragraph_index = [paragragh_start_index, paragragh_end_index]
   end
 
-  def perform_line_checks
-    top_empty_line(@my_data[0], @my_data[1])
-    heading_check(@my_data[2])
-    bottom_header_empty_line(@my_data[3])
-    @my_data.each_with_index do |line, index|
-      line = StringScanner.new(line)
-      puts "Performing checks on line: #{index + 1} "
-      start_space_check(line, index)
-      end_space_check(line, index)
-      within_space_check(line, index)
-      capital_i_check(line, index)
-      punctuation_space_check(line, index)
-      capital_letter_check(line, index)
-      new_line_capitalization(line, index)
-    end
-    bottom_text_check(@my_data[@my_data.length - 2], @my_data.last)
-  end
-
   def start_space_check(line, index)
-    if !@my_paragraph_index[0].include?(index) && index > 3
-      counter = 0
-      flag = true
-      while flag
-        item = line.getch
-        counter += 1 if item == ' '
-        flag = false if item != ' '
-      end
-      puts "Line :#{index + 1} Trailling white-space detected at start of line" if counter.positive?
+    if !@my_paragraph_index[0].include?(index) && index > 3 && line.peek(1) == ' '
+      puts "Line :#{index + 1} Trailling white-space detected at start of line"
     end
   end
 
   def end_space_check(line, index)
-    end_space_count = 0
     current_line = StringScanner.new(line.string.reverse)
-    flag = true
-    while flag
-      item = current_line.getch
-      end_space_count += 1 if item == ' '
-      flag = false if item != ' '
-    end
-    puts "Line :#{index + 1} Trailling white-space detected at end of line" if end_space_count.positive?
+    puts "Line :#{index + 1} Trailling white-space detected at end of line" if current_line.peek(1) == ' '
   end
 
   def within_space_check(line, index)
@@ -129,7 +95,7 @@ class Lines
     first_word = line.scan_until(/(\w+)/)
     if first_word
       first_word.strip[0]
-      if first_word.strip[0].upcase != first_word.strip[0] && line.peek(1) == 1
+      if first_word.strip[0].upcase != first_word.strip[0]
         puts "Line :#{index + 1} Use '#{first_word.strip[0].upcase}' insted of '#{first_word.strip[0]} at the start of a new line"
       end
     end

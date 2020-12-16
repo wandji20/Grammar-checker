@@ -6,13 +6,6 @@ class Paragraph
     @index_arr = index_arr
   end
 
-  def perform_paragraph_check
-    para_counts
-    para_word_counts(@index_arr[0], @index_arr[1])
-    para_line_space
-    para_start_space_check(@index_arr[0])
-  end
-
   def para_counts
     if @index_arr[0].length > 4
       puts "Line :#{@index_arr[1].last + 1} Exceeded maximum number of paragraphs '#{@index_arr[1].length}/4 '"
@@ -50,6 +43,7 @@ class Paragraph
   end
 
   def para_start_space_check(arr)
+    p arr
     arr.each do |line_index|
       line = StringScanner.new(@arr[line_index])
       puts "Line: #{line_index + 1} 2 space indentation missing at the start of paragraph" if line.peek(2) != '  '
