@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+
 require '../lib/working_data'
 require '../lib/line'
 require_relative '../lib/paragraph'
