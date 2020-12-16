@@ -1,3 +1,4 @@
+# rubocop:disable Style/GuardClause,Style/Next,Metrics/CyclomaticComplexity,Layout/LineLength,Style/IfUnlessModifier
 class Lines
   attr_accessor :my_paragraph_index
   attr_reader :my_data
@@ -13,16 +14,16 @@ class Lines
     paragragh_start_index = []
     paragragh_end_index = []
     (4...@my_data.length - 1).each do |i|
-      if  /[a-zA-Z]/.match(@my_data[i]) && @my_data[i - 1] == ''
+      if /[a-zA-Z]/.match(@my_data[i]) && @my_data[i - 1] == ''
         paragragh_start_index << i
       end
     end
-    (4...@my_data.length-1).each do |i|
-      if  /[a-zA-Z]/.match(@my_data[i]) && @my_data[i + 1] == ''
+    (4...@my_data.length - 1).each do |i|
+      if /[a-zA-Z]/.match(@my_data[i]) && @my_data[i + 1] == ''
         paragragh_end_index << i
       end
     end
-    @my_paragraph_index = [paragragh_start_index, paragragh_end_index ]
+    @my_paragraph_index = [paragragh_start_index, paragragh_end_index]
   end
 
   def perform_line_checks
@@ -73,15 +74,17 @@ class Lines
     current_line = StringScanner.new(current_line)
     until current_line.eos?
       current_item = current_line.getch
-      puts "Line :#{index + 1} Trailling white-space detected within words" if current_item == ' ' &&current_line.peek(1) == ' '
+      if current_item == ' ' && current_line.peek(1) == ' '
+        puts "Line :#{index + 1} Trailling white-space detected within words"
+      end
     end
   end
 
   def capital_i_check(line, index)
     current_line = StringScanner.new(line.string)
     until current_line.eos?
-    scanned_word = current_line.scan_until(/\w+/)
-    current_line.terminate if scanned_word == nil
+      scanned_word = current_line.scan_until(/\w+/)
+      current_line.terminate if scanned_word.nil?
       if scanned_word && scanned_word.strip == 'i' && current_line.peek(1) == ' '
         puts "Line :#{index + 1} Wrong capitalization of 'i' Use 'I' instead "
       end
@@ -94,7 +97,7 @@ class Lines
       current_item = current_line.getch
       if @punctuation.include?(current_item)
         current_line.pos = current_line.pos - 2
-        if  current_line.peek(1) == ' '
+        if current_line.peek(1) == ' '
           puts "Line :#{index + 1} Trailling white-space detected before '#{current_item}' "
         end
         current_line.pos = current_line.pos + 2
@@ -152,3 +155,4 @@ class Lines
     puts ' Missing empty lines at the Bottom of Article Title' unless line4 == ''
   end
 end
+# rubocop:enable Style/GuardClause,Style/Next,Metrics/CyclomaticComplexity,Layout/LineLength,Style/IfUnlessModifier

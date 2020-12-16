@@ -1,3 +1,4 @@
+# rubocop:disable Style/GuardClause
 class Paragraph
   attr_reader :arr, :index_arr
   def initialize(arr, index_arr)
@@ -56,3 +57,5 @@ class Paragraph
     end
   end
 end
+
+# rubocop:enable Style/GuardClause
