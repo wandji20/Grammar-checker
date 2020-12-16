@@ -7,7 +7,6 @@ my_data = ['', 'the blackloard', 'My Rspec  Test ', ' name', ' my name  is wandj
 
 describe Lines do
   my_lines = Lines.new(my_data)
-  val1 = StringScanner.new(my_data[0])
   val2 = StringScanner.new(my_data[1])
   val3 = StringScanner.new(my_data[2])
   val4 = StringScanner.new(my_data[3])

@@ -2,7 +2,7 @@
 
 # Text Grammmar Linter
 
-## This project is based on scanning through and input text file and gives it more structure alongside correcting basic grammatic errors.
+## This project is based on scanning through and input text file and giving it more structure alongside correcting basic grammatic errors.
 
 - It basically throws back errors about
 - Wrong capitalization at the start of a new line
@@ -28,8 +28,8 @@ To get a local copy up and running the following instructions.
 
 ### Prerequisites
 
-Ruby installed in local machine.
-RSpec should be installed on local computer.
+- Ruby installed in local machine.
+- RSpec should be installed on local computer.
 
 ### Install
 
