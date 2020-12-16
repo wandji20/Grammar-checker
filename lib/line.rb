@@ -1,74 +1,64 @@
 class Lines
-  attr_accessor :all_lines
-  attr_reader :work_data
+  attr_accessor :my_paragraph_index
+  attr_reader :my_data
 
   def initialize(lines_array)
     @punctuation = ['.', ',', ';', ':', '!', '?']
     @my_data = lines_array
-    @all_lines = []
-    make_lines
+    @my_paragraph_index = nil
+    paragraph_index
   end
 
-  def make_lines
-    @my_data.each do |line|
-      @all_lines << [line]
+  def paragraph_index
+    paragragh_start_index = []
+    paragragh_end_index = []
+    (4...@my_data.length-1).each do |i|
+      if  /[a-zA-Z]/.match(@my_data[i]) && @my_data[i-1] == ''
+        paragragh_start_index << i
+      end
     end
-    @all_lines
-  end
-
-  def all_words
-    total_word = 0
-    @all_lines.each do |line|
-      total_word += word_count(line)
+    (4...@my_data.length-1).each do |i|
+      if  /[a-zA-Z]/.match(@my_data[i]) && @my_data[i+1] == ''
+        paragragh_end_index << i
+      end
     end
-    puts "Exceded maximum word limit #{total_word} words " if total_word > 30
+    @my_paragraph_index = [paragragh_start_index, paragragh_end_index ]
   end
 
-  def word_count(line)
-    counts = 0
-    line = StringScanner.new(line[0])
-    until line.eos?
-      scanned_section = line.scan_until(/\w+/)
-      counts += 1 unless scanned_section.nil?
-
-      line.terminate if scanned_section.nil?
-    end
-    counts
-  end
-
-  def doing_line_checks
-    top_empty_line(@all_lines[0][0], @all_lines[1][0])
-    heading_check(@all_lines[2][0])
-    bottom_header_empty_line(@all_lines[3][0])
-    all_lines.each_with_index do |line, index|
-      line = StringScanner.new(line[0])
+  def perform_line_checks
+    @my_data.each_with_index do |line, index|
+      line = StringScanner.new(line)
+      puts "Performing checks on line: #{index+1} "
       start_space_check(line, index)
       end_space_check(line, index)
-      within_space_check(line, index)
-      punctuation_check(line, index)
-      capital_letter_check(line, index)
+      within_space_check(line, index) 
       capital_i_check(line, index)
+      punctuation_space_check(line, index) 
+      capital_letter_check(line, index)
+  
+  
     end
-    bottom_text_check(@all_lines.last[0])
   end
 
   def start_space_check(line, index)
-    start_space_count = 0
-    flag = true
-    while flag
-      item = line.getch
-      start_space_count += 1 if item == ' '
-      flag = false if item != ' '
+    unless @my_paragraph_index[0].include?(index)
+      counter = 0
+      flag = true
+      while flag
+        item = line.getch
+        counter += 1 if item == ' '
+        flag = false if item != ' '
+      end
+      puts "Line :#{index + 1} Trailling white-space detected at start of line" if counter.positive?
     end
-    puts "Line :#{index + 1} Trailling white-space detected at start of line" if start_space_count.positive?
   end
 
   def end_space_check(line, index)
     end_space_count = 0
-    line = StringScanner.new(line.string.reverse)
+    current_line = StringScanner.new(line.string.reverse)
     flag = true
     while flag
-      item = line.getch
+      item = current_line.getch
       end_space_count += 1 if item == ' '
       flag = false if item != ' '
     end
@@ -76,71 +66,104 @@ class Lines
   end
 
   def within_space_check(line, index)
-    line = line.string.strip
-    line = StringScanner.new(line)
-    until line.eos?
-      current_item = line.getch
-      next unless current_item == ' '
-
-      line.pos = line.pos - 2
-      puts "Line :#{index + 1} Trailling white-space detected within words" if line.peek(2) == '  '
-      line.pos = line.pos + 2
-
-    end
-  end
-
-  def punctuation_check(line, index)
-    until line.eos?
-      current_item = line.getch
-      next unless @punctuation.include?(current_item)
-
-      line.pos = line.pos - 2
-      puts "Line :#{index + 1} Trailling white-space detected before #{current_item} " if line.peek(1) == ' '
-      line.pos = line.pos + 2
-      puts "Line :#{index + 1} Trailling white-space detected after #{current_item} " if line.peek(2) == '  '
-      puts "Line :#{index + 1} Missing white-space after #{current_item} "  if !line.eos? && line.peek(1) != ' '
-    end
-  end
-
-  def capital_letter_check(line, index)
-    until line.eos?
-      current_item = line.getch
-      next unless ['.', '?', '!'].include?(current_item)
-
-      scanned_word = line.scan_until(/(\w+)/)
-      next if scanned_word.nil?
-
-      validity = scanned_word.strip[0] == scanned_word.strip[0].upcase
-      unless validity
-        puts "Line :#{index + 1} Wrong capitalization of #{scanned_word.strip[0]} in '#{scanned_word.strip}' "
-      end
+    current_line = line.string.strip
+    current_line = StringScanner.new(current_line)
+    until current_line.eos?
+      current_item = current_line.getch
+      puts "Line :#{index + 1} Trailling white-space detected within words" if current_item == ' ' && current_line.peek(1) == ' '
     end
   end
 
   def capital_i_check(line, index)
-    until line.eos?
-      scanned_word = line.scan_until(/(\w+)/)
-      scanned_word&.strip!
-      puts "Line :#{index + 1} Wrong capitalization of 'i' Use 'I' instead " if scanned_word == 'i'
-      line.terminate if scanned_word.nil?
+    current_line = StringScanner.new(line.string)
+    until current_line.eos?
+    scanned_word = current_line.scan_until(/\w+/)
+    current_line.terminate if scanned_word == nil
+      if scanned_word && scanned_word.strip == 'i'
+        puts "Line :#{index + 1} Wrong capitalization of 'i' Use 'I' instead "   
+      end
     end
   end
 
-  def top_empty_line(line1, line2)
-    puts ' Missing Two empty lines at the top of Article' unless line1 == '' && line2 == ''
+  def punctuation_space_check(line, index)
+    current_line = StringScanner.new(line.string)
+    until current_line.eos?
+      current_item = current_line.getch
+
+      if @punctuation.include?(current_item) 
+        current_line.pos = current_line.pos - 2
+        if  current_line.peek(1) == ' '
+          puts "Line :#{index + 1} Trailling white-space detected before '#{current_item}' " 
+        end
+        current_line.pos = current_line.pos + 2
+        if current_line.pos < line.string.length && current_line.peek(2) == '  '
+          puts "Line :#{index + 1} Two white-spaces detected after '#{current_item}' instead of one " 
+        end
+      end
+    end
   end
 
-  def bottom_text_check(line)
-    puts 'Line  Trailing empty line at the End of Text' if line == ''
+  def capital_letter_check(line, index)
+    current_line = StringScanner.new(line.string)
+    until current_line.eos?
+      current_item = current_line.getch     
+      if ['.', '?', '!'].include?(current_item)    
+        scanned_word = current_line.scan_until(/\w+/)
+        current_line.terminate if scanned_word == nil
+        if scanned_word && scanned_word.strip[0].upcase != scanned_word.strip[0]
+          puts "Line :#{index + 1} Use  '#{scanned_word.strip[0].upcase}' insted of '#{scanned_word.strip[0]}' in word '#{scanned_word.strip}'" 
+        end
+      end
+    end
   end
 
-  def heading_check(line)
-    arr = line.split
-    puts 'Line 3: Capitalize all header words' unless arr.all? { |word| word[0] == word[0].upcase }
-  end
 
-  def bottom_header_empty_line(line4)
-    puts ' Missing empty lines at the Bottom of Article Title' unless line4 == ''
-  end
+
+
+  # def all_words
+  #   total_word = 0
+  #   @all_lines.each do |line|
+  #     total_word += word_count(line)
+  #   end
+  #   puts "Exceded maximum word limit #{total_word} words " if total_word > 30
+  # end
+
+  # def word_count(line)
+  #   counts = 0
+  #   line = StringScanner.new(line[0])
+  #   until line.eos?
+  #     scanned_section = line.scan_until(/\w+/)
+  #     counts += 1 unless scanned_section.nil?
+
+  #     line.terminate if scanned_section.nil?
+  #   end
+  #   counts
+  # end
+
+
+
+
+
+
+
+
+
+
+  # def top_empty_line(line1, line2)
+  #   puts ' Missing Two empty lines at the top of Article' unless line1 == '' && line2 == ''
+  # end
+
+  # def bottom_text_check(line)
+  #   puts 'Line  Trailing empty line at the End of Text' if line == ''
+  # end
+
+  # def heading_check(line)
+  #   arr = line.split
+  #   puts 'Line 3: Capitalize all header words' unless arr.all? { |word| word[0] == word[0].upcase }
+  # end
+
+  # def bottom_header_empty_line(line4)
+  #   puts ' Missing empty lines at the Bottom of Article Title' unless line4 == ''
+  # end
 
 end
