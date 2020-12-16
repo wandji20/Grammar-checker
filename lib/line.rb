@@ -26,22 +26,20 @@ class Lines
   end
 
   def perform_line_checks
-    @my_data.each_with_index do |line, index|
-      line = StringScanner.new(line)
-      puts "Performing checks on line: #{index+1} "
-      start_space_check(line, index)
-      end_space_check(line, index)
-      within_space_check(line, index) 
-      capital_i_check(line, index)
-      punctuation_space_check(line, index) 
-      capital_letter_check(line, index)
-  
-  
-    end
+    # @my_data.each_with_index do |line, index|
+    #   line = StringScanner.new(line)
+    #   puts "Performing checks on line: #{index+1} "
+    #   start_space_check(line, index)
+    #   end_space_check(line, index)
+    #   within_space_check(line, index) 
+    #   capital_i_check(line, index)
+    #   punctuation_space_check(line, index) 
+    #   capital_letter_check(line, index)
+    # end
   end
 
   def start_space_check(line, index)
-    unless @my_paragraph_index[0].include?(index)
+    if !@my_paragraph_index[0].include?(index) && index > 3
       counter = 0
       flag = true
       while flag
@@ -98,6 +96,9 @@ class Lines
         current_line.pos = current_line.pos + 2
         if current_line.pos < line.string.length && current_line.peek(2) == '  '
           puts "Line :#{index + 1} Two white-spaces detected after '#{current_item}' instead of one " 
+        end
+        if @punctuation.include?(current_line.peek(1))
+          puts "Line :#{index + 1} Wrong use of punctuation mark after '#{current_item}' "
         end
       end
     end
