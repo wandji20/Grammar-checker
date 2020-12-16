@@ -27,6 +27,9 @@ class Lines
   def start_space_check(line, index)
     if !@my_paragraph_index[0].include?(index) && index > 3 && line.peek(1) == ' '
       puts "Line :#{index + 1} Trailling white-space detected at start of line"
+      return  true
+    else
+      false
     end
   end
 
