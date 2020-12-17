@@ -24,7 +24,7 @@ class Paragraph
         total_words += line_word_counts(line_index)
       end
     end
-    if total_words > 400
+    if total_words > 300
       puts "Maximum word size Exceeded: You made #{total_words} Words"
       flag = true
     end

@@ -14,7 +14,7 @@
 - Third line must be a title with a 10 space indentation with all words capitalized.
 - Maximum of 4 paragraphs allowed.
 - All paragraphs must start with a 2 space indentation and must have a one line indentation at the start and end.
-- Maximum word count of 200 words.
+- Maximum word count of 300 words.
 
 ![screenshot](./Screenshot.png)
 
