@@ -1,10 +1,10 @@
 require_relative '../lib/working_data'
 require_relative '../lib/line'
 require_relative '../lib/paragraph'
-require_relative 'strscan'
+require 'strscan'
 
 my_data = ['', '', 'I love  My Rspec ! Test, ', '', 'the blackloard',
-           ' name', '', ' my name  is wandji', '', 'Microverse great community i think! ']
+           ' name', '', '  my name  is wandji', '', 'Microverse great community i think! ']
 
 describe Lines do
   my_lines = Lines.new(my_data)
@@ -71,7 +71,7 @@ describe Paragraph do
     it 'returns true if the first line of a paragraph is missing a 2 space indentation' do
       expect(my_para1.para_start_space_check([4])).to eq true
     end
-    it 'returns false if the first line of a paragraph hase a 2 space indentation' do
+    it 'returns false if the first line of a paragraph has a 2 space indentation' do
       expect(my_para1.para_start_space_check([7])).to eq false
     end
   end
