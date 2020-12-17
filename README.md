@@ -2,18 +2,18 @@
 
 # Text Grammmar Linter
 
-## This project is based on scanning through an input text file giving it more structure alongside correcting basic grammatic errors.
+## This project is designed to scan through an input text file and output errors about its structure and typography.
 
-# It basically throws back errors about
+# It basically throws errors about
 
 - Wrong capitalization at the start of a new line.
-- Wromg use of the word "i" in a sentence.
-- Wrong spacing betwwen words(just one space is required).
+- Wrong use of the word 'i' in a sentence.
+- Wrong spacing between words(just one space is required).
 - Wrong spacing before(no-space) and after(2 spaces) punctuation marks.
-- You Must have 2 spaces indentation at the start of text
-- Third line must be a title with a 10 space indentation and all words capitalized
-- Maximum of 4 paragraphs allowed
-- All paragraphes must start with a 2 space indentation and must have a one line indentation at the start and end.
+- You must have 2 lines indentation at the start of text.
+- Third line must be a title with a 10 space indentation with all words capitalized.
+- Maximum of 4 paragraphs allowed.
+- All paragraphs must start with a 2 space indentation and must have a one line indentation at the start and end.
 - Maximum word count of 200 words.
 
 ![screenshot](./Screenshot.png)

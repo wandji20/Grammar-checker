@@ -6,7 +6,7 @@ class WorkData
   def initialize
     @arr = []
     @result = []
-    @my_file = File.read('../user1.txt')
+    @my_file = File.read('user1.txt')
     @working_file = StringScanner.new(@my_file)
     get_arr(@working_file)
     new_line_remove

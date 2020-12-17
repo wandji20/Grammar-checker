@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-require '../lib/working_data'
-require '../lib/line'
+require_relative '../lib/working_data'
+require_relative '../lib/line'
 require_relative '../lib/paragraph'
 
 work_data = WorkData.new

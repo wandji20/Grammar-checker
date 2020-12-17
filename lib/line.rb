@@ -35,7 +35,12 @@ class Lines
 
   def end_space_check(line, index)
     current_line = StringScanner.new(line.string.reverse)
-    puts "Line :#{index + 1} Trailling white-space detected at end of line" if current_line.peek(1) == ' '
+    if current_line.peek(1) == ' '
+      puts "Line :#{index + 1} Trailling white-space detected at end of line"
+      true
+    else
+      false
+    end
   end
 
   def within_space_check(line, index)
@@ -53,19 +58,21 @@ class Lines
   end
 
   def capital_i_check(line, index)
+    flag = false
     current_line = StringScanner.new(line.string)
     until current_line.eos?
       scanned_word = current_line.scan_until(/\w+/)
       current_line.terminate if scanned_word.nil?
       if scanned_word && scanned_word.strip == 'i' && current_line.peek(1) == ' '
         puts "Line :#{index + 1} Wrong capitalization of 'i' Use 'I' instead "
-        true
+        flag = true
       end
-      false
     end
+    flag
   end
 
   def punctuation_space_check(line, index)
+    flag = false
     current_line = StringScanner.new(line.string)
     until current_line.eos?
       current_item = current_line.getch
@@ -74,13 +81,16 @@ class Lines
         if current_line.peek(1) == ' '
           puts "Line :#{index + 1} Trailling white-space detected before '#{current_item}' "
           current_line.pos = current_line.pos + 2
+          flag = true
         elsif current_line.pos < line.string.length && current_line.peek(2) == '  '
           puts "Line :#{index + 1} Two white-spaces detected after '#{current_item}' instead of one "
+          flag = true
         elsif @punctuation.include?(current_line.peek(1))
           puts "Line :#{index + 1} Wrong use of punctuation mark after '#{current_item}' "
+          flag = true
         end
       end
-      false
+      flag
     end
   end
 
