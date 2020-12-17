@@ -23,6 +23,7 @@ def doing_checks(my_para, my_lines, my_data, my_para_index)
     my_lines.capital_i_check(line, index)
     my_lines.capital_letter_check(line, index)
     my_lines.new_line_capitalization(line, index)
+    my_lines.punctuation_space_check(line, index)
   end
   my_lines.bottom_text_check(my_data[total_size - 2], my_data[total_size - 1])
   my_para.para_counts

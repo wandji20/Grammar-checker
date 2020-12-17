@@ -1,4 +1,4 @@
-# rubocop:disable Style/GuardClause,Style/Next,Metrics/CyclomaticComplexity,Layout/LineLength,Style/IfUnlessModifier,Metrics/PerceivedComplexity
+# rubocop:disable Style/GuardClause,Style/Next,Layout/LineLength,Style/IfUnlessModifier
 class Lines
   attr_accessor :my_data
   attr_reader :my_paragraph_index
@@ -83,13 +83,11 @@ class Lines
           puts "Line :#{index + 1} Trailling white-space detected before '#{current_item}' "
           current_line.pos = current_line.pos + 2
           flag = true
-        elsif current_line.pos < line.string.length && current_line.peek(2) == '  '
-          puts "Line :#{index + 1} Two white-spaces detected after '#{current_item}' instead of one "
-          flag = true
         elsif @punctuation.include?(current_line.peek(1))
           puts "Line :#{index + 1} Wrong use of punctuation mark after '#{current_item}' "
           flag = true
         end
+        current_line.pos = current_line.pos + 2
       end
       flag
     end
@@ -144,4 +142,4 @@ class Lines
     puts ' Missing empty lines at the Bottom of Article Title' unless line4 == ''
   end
 end
-# rubocop:enable Style/GuardClause,Style/Next,Metrics/CyclomaticComplexity,Layout/LineLength,Style/IfUnlessModifier,Metrics/PerceivedComplexity
+# rubocop:enable Style/GuardClause,Style/Next,Layout/LineLength,Style/IfUnlessModifier
