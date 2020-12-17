@@ -1,12 +1,12 @@
 require 'strscan'
 
 class WorkData
-  attr_accessor :arr, :result
+  attr_accessor :result
+  attr_reader :arr
 
   def initialize
     @arr = []
-    @result = []
-    @my_file = File.read('user1.txt')
+    @my_file = File.read('../data/user1.txt')
     @working_file = StringScanner.new(@my_file)
     get_arr(@working_file)
     new_line_remove

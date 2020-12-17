@@ -1,6 +1,7 @@
 # rubocop:disable Style/GuardClause,Style/Next,Metrics/CyclomaticComplexity,Layout/LineLength,Style/IfUnlessModifier,Metrics/PerceivedComplexity
 class Lines
-  attr_accessor :my_paragraph_index, :my_data
+  attr_accessor :my_data
+  attr_reader :my_paragraph_index
 
   def initialize(lines_array)
     @punctuation = ['.', ',', ';', ':', '!', '?']

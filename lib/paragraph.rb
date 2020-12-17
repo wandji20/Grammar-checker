@@ -1,6 +1,6 @@
-# rubocop:disable Style/GuardClause
 class Paragraph
   attr_reader :arr, :index_arr
+
   def initialize(arr, index_arr)
     @arr = arr
     @index_arr = index_arr
@@ -25,7 +25,7 @@ class Paragraph
       end
     end
     if total_words > 400
-      puts "Maximum word size Exceeded: You made #{total_words} Words" 
+      puts "Maximum word size Exceeded: You made #{total_words} Words"
       flag = true
     end
     flag
@@ -58,7 +58,7 @@ class Paragraph
     arr.each do |line_index|
       line = StringScanner.new(@arr[line_index])
       if line.peek(2) != '  '
-        puts "Line: #{line_index + 1} 2 space indentation missing at the start of paragraph" 
+        puts "Line: #{line_index + 1} 2 space indentation missing at the start of paragraph"
         flag = true
       elsif line.peek(3) == '   '
         puts "Line: #{line_index + 1} Trailling white space detected at the start of paragraph"
@@ -68,4 +68,3 @@ class Paragraph
     flag
   end
 end
-# rubocop:enable Style/GuardClause
