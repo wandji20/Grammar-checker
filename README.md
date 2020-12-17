@@ -40,7 +40,7 @@ To get a local copy up and running, apply the following instructions.
 $ git clone https://github.com/wandji20/ruby-linters-capstone
 ```
 
-2. - Navigate to the project folder and paste a text in user1.txt
+2. - Navigate to the project folder and paste a text in input/user1.txt
    - Run bin/linters.rb to get results of fouls committed on the console.
    - cd to spec folder and run rspec test_examples.rb to view test results.
 
