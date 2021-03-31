@@ -1,6 +1,6 @@
 ![](https://img.shields.io/badge/Microverse-blueviolet)
 
-# Text Grammmar Linter
+# Text Grammar Linter
 
 ## This project is designed to scan through an input text file and output errors about its structure and typography.
 
