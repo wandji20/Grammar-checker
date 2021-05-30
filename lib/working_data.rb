@@ -5,7 +5,7 @@ class WorkData
 
   def initialize
     @arr = []
-    @my_file = File.read('../input/user1.txt')
+    @my_file = File.read('/home/wandji/Microverse/Ruby/Grammar-checker/input/user1.txt')
     @working_file = StringScanner.new(@my_file)
     get_arr(@working_file)
     new_line_remove
